@@ -118,7 +118,6 @@ class MainWindow(QMainWindow):
             material = entry.get("material", "")
             items = entry.get("items", 0)
             self.add_item_to_list(type, material, 0, items)
-        self._update_results_table()
         print(f"Opened project from {file_path}")
 
     def export_project(self):
@@ -156,7 +155,7 @@ class MainWindow(QMainWindow):
         row = table.currentRow()
         if row >= 0:
             table.removeRow(row)
-            self._update_results_table()
+            self._sort_calculator_table()
 
     def open_add_item_dialog(self):
         print("opening")
@@ -167,13 +166,16 @@ class MainWindow(QMainWindow):
         self.add_item_dialog.show()
         
     def add_item_to_list(self, type, material, stacks, items):
-        table = self.main_window.tableWidget_calculator
-        row = table.rowCount()
-        table.insertRow(row)
-
         stacks_val = float(stacks) if stacks else 0.0
         items_val = float(items) if items else 0.0
         total_items = items_val + stacks_val * 64
+        self._populate_calculator_row(type, material, total_items)
+        self._sort_calculator_table()
+
+    def _populate_calculator_row(self, type, material, total_items):
+        table = self.main_window.tableWidget_calculator
+        row = table.rowCount()
+        table.insertRow(row)
 
         full_stacks = int(total_items // 64)
         remaining = int(total_items % 64)
@@ -203,7 +205,25 @@ class MainWindow(QMainWindow):
             {"type": type, "material": material, "items": total_items},
         )
 
-        print(f"Added: {name} | {base_name} | {total_items} items | base {base_items}")
+    def _sort_calculator_table(self):
+        table = self.main_window.tableWidget_calculator
+        rows = []
+        for row in range(table.rowCount()):
+            item = table.item(row, 0)
+            if item is None:
+                continue
+            data = item.data(Qt.ItemDataRole.UserRole)
+            if data is None:
+                continue
+            rows.append(data)
+        rows.sort(key=lambda d: float(d.get("items", 0)), reverse=True)
+        table.setRowCount(0)
+        for data in rows:
+            self._populate_calculator_row(
+                data.get("type", ""),
+                data.get("material", ""),
+                float(data.get("items", 0)),
+            )
         self._update_results_table()
 
     def _update_results_table(self):
@@ -228,7 +248,13 @@ class MainWindow(QMainWindow):
 
         results_table = self.main_window.tableWidget_results
         results_table.setRowCount(0)
-        for (material, base_name), amount in totals.items():
+
+        sorted_totals = sorted(
+            totals.items(),
+            key=lambda kv: kv[1],
+            reverse=True,
+        )
+        for (material, base_name), amount in sorted_totals:
             row = results_table.rowCount()
             results_table.insertRow(row)
             total_base_items = math.ceil(amount)
