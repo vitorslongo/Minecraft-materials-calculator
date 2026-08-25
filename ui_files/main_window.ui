@@ -87,7 +87,12 @@
            <widget class="QTableWidget" name="tableWidget_calculator">
             <column>
              <property name="text">
-              <string>Number of items</string>
+              <string>Name</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Items</string>
              </property>
             </column>
             <column>
@@ -97,17 +102,17 @@
             </column>
             <column>
              <property name="text">
-              <string>Name</string>
+              <string>Base name</string>
              </property>
             </column>
             <column>
              <property name="text">
-              <string>Base item</string>
+              <string>Base items</string>
              </property>
             </column>
             <column>
              <property name="text">
-              <string>Number of base items</string>
+              <string>Base stacks</string>
              </property>
             </column>
            </widget>
