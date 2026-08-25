@@ -3,9 +3,14 @@ import math
 import sys
 
 from PySide6.QtCore import Qt
-
-from PySide6.QtWidgets import (QAbstractItemView, QApplication, QFileDialog,
-                               QHeaderView, QMainWindow, QTableWidgetItem)
+from PySide6.QtWidgets import (
+    QAbstractItemView,
+    QApplication,
+    QFileDialog,
+    QHeaderView,
+    QMainWindow,
+    QTableWidgetItem,
+)
 
 from src.add_item import AddItem
 from src.results import Results
@@ -23,6 +28,7 @@ class MainWindow(QMainWindow):
         self.results = Results()
         self._setup_table_columns()
         self._disable_table_editing()
+        self._setup_results_table_columns()
 
         self._create_callbacks()
 
@@ -39,6 +45,17 @@ class MainWindow(QMainWindow):
     def _disable_table_editing(self):
         table = self.main_window.tableWidget_calculator
         table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+
+
+    def _setup_results_table_columns(self):
+        table = self.main_window.tableWidget_results
+        table.setColumnCount(3)
+        table.setHorizontalHeaderLabels(["Base item", "Total base items", "Stacks"])
+        table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        header = table.horizontalHeader()
+        header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+        for col in [1, 2]:
+            header.setSectionResizeMode(col, QHeaderView.ResizeMode.ResizeToContents)
 
 
     def _create_callbacks(self):
@@ -101,6 +118,7 @@ class MainWindow(QMainWindow):
             material = entry.get("material", "")
             items = entry.get("items", 0)
             self.add_item_to_list(type, material, 0, items)
+        self._update_results_table()
         print(f"Opened project from {file_path}")
 
     def export_project(self):
@@ -131,12 +149,14 @@ class MainWindow(QMainWindow):
 
     def reset_requirements_table(self):
         self.main_window.tableWidget_calculator.setRowCount(0)
+        self._update_results_table()
 
     def delete_item(self):
         table = self.main_window.tableWidget_calculator
         row = table.currentRow()
         if row >= 0:
             table.removeRow(row)
+            self._update_results_table()
 
     def open_add_item_dialog(self):
         print("opening")
@@ -158,13 +178,13 @@ class MainWindow(QMainWindow):
         full_stacks = int(total_items // 64)
         remaining = int(total_items % 64)
 
-        multiplier = self.results.get_structure_to_base_multiplier(type)
+        multiplier = self.results.get_item_base_multiplier(type, material)
         base_items = math.ceil(total_items * multiplier)
         full_base_stacks = int(base_items // 64)
         remaining_base = int(base_items % 64)
 
         name = f"{material.capitalize()} {type}"
-        base_name_raw = self.results.get_base_name(type)
+        base_name_raw = self.results.get_item_base_name(type, material)
         base_name = f"{material.capitalize()} {base_name_raw}" if base_name_raw != type else material.capitalize()
 
         table.setItem(row, 0, QTableWidgetItem(name))
@@ -181,6 +201,44 @@ class MainWindow(QMainWindow):
         )
 
         print(f"Added: {name} | {base_name} | {total_items} items | base {base_items}")
+        self._update_results_table()
+
+    def _update_results_table(self):
+        calc_table = self.main_window.tableWidget_calculator
+        totals = {}
+        for row in range(calc_table.rowCount()):
+            item = calc_table.item(row, 0)
+            if item is None:
+                continue
+            data = item.data(Qt.ItemDataRole.UserRole)
+            if data is None:
+                continue
+            type = data.get("type", "")
+            material = data.get("material", "")
+            total_items = float(data.get("items", 0))
+            if not type or total_items == 0:
+                continue
+            multiplier = self.results.get_structure_to_base_multiplier(type, material)
+            base_name = self.results.get_base_name(type, material)
+            key = (material.lower(), base_name)
+            totals[key] = totals.get(key, 0.0) + total_items * multiplier
+
+        results_table = self.main_window.tableWidget_results
+        results_table.setRowCount(0)
+        for (material, base_name), amount in totals.items():
+            row = results_table.rowCount()
+            results_table.insertRow(row)
+            total_base_items = math.ceil(amount)
+            full_base_stacks = int(total_base_items // 64)
+            remaining_base = int(total_base_items % 64)
+            base_name_l = base_name.lower()
+            if material and base_name_l and base_name_l == material.lower():
+                label = base_name.capitalize()
+            else:
+                label = f"{material.capitalize()} {base_name}" if material else base_name
+            results_table.setItem(row, 0, QTableWidgetItem(label))
+            results_table.setItem(row, 1, QTableWidgetItem(self._format_number(total_base_items)))
+            results_table.setItem(row, 2, QTableWidgetItem(self._format_stacks(full_base_stacks, remaining_base)))
 
     def _format_number(self, value):
         if value.is_integer():
