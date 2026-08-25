@@ -1,0 +1,9 @@
+[project]
+name = "calculadora-de-materiais-minecraft"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pyside6>=6.11.2",
+]
