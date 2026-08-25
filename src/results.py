@@ -34,6 +34,7 @@ class Results:
         self.iron_bars = 6 / 16     
         self.ladder = 7 / 24        
         self.cauldron = 7           
+        self.trapdoor = 3 / 4        # 6 planks -> 2 trapdoors => 1 trapdoor = 3 planks = 3/4 log
 
     def _is_wood(self, material: str) -> bool:
         return material.strip().lower() in self.WOOD
@@ -68,6 +69,7 @@ class Results:
             "iron bar": self.iron_bars,
             "ladder": self.ladder,
             "cauldron": self.cauldron,
+            "trapdoor": self.trapdoor,
         }.get(structure, 1)
 
     # Retorna o NOME do material primário (ex: "logs", "glass", ou o próprio material).
@@ -89,6 +91,7 @@ class Results:
             "iron bar": "iron ingots",
             "cauldron": "iron ingots",
             "wall": "logs",
+            "trapdoor": "logs",
         }.get(structure, structure_type.strip())
 
     # ------------------------------------------------------------------
@@ -115,6 +118,7 @@ class Results:
             "iron bar": "iron ingots",
             "cauldron": "iron ingots",
             "wall": "planks",
+            "trapdoor": "planks",
         }.get(structure, structure_type.strip())
 
     # Retorna quantos base items IMEDIATOS são necessários para fabricar 1 item.
@@ -138,4 +142,5 @@ class Results:
             "iron bar": 6 / 16,
             "cauldron": 7,
             "wall": 1,
+            "trapdoor": 3,
         }.get(structure, 1)
