@@ -185,7 +185,10 @@ class MainWindow(QMainWindow):
 
         name = f"{material.capitalize()} {type}"
         base_name_raw = self.results.get_item_base_name(type, material)
-        base_name = f"{material.capitalize()} {base_name_raw}" if base_name_raw != type else material.capitalize()
+        if base_name_raw and base_name_raw.lower() != type.lower() and base_name_raw.lower() != material.lower():
+            base_name = f"{material.capitalize()} {base_name_raw}"
+        else:
+            base_name = material.capitalize()
 
         table.setItem(row, 0, QTableWidgetItem(name))
         table.setItem(row, 1, QTableWidgetItem(self._format_number(total_items)))
