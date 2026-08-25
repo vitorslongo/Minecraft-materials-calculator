@@ -76,7 +76,9 @@ class Results:
     def get_base_name(self, structure_type: str, material: str = ""):
         structure = self._norm(structure_type)
         if not self._is_wood(material):
-            return material.strip()
+            # Material não-madeira: o próprio bloco é o base. Se o material
+            # estiver vazio, usamos o tipo (ex: "glass" -> "glass").
+            return material.strip() or structure
         return {
             "plank": "logs",
             "stair": "logs",
@@ -103,7 +105,9 @@ class Results:
     def get_item_base_name(self, structure_type: str, material: str = ""):
         structure = self._norm(structure_type)
         if not self._is_wood(material):
-            return material.strip()
+            # Material não-madeira: o próprio bloco é o base. Se o material
+            # estiver vazio, usamos o tipo (ex: "glass" -> "glass").
+            return material.strip() or structure
         return {
             "plank": "logs",
             "stair": "planks",

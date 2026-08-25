@@ -185,12 +185,12 @@ class MainWindow(QMainWindow):
         full_base_stacks = int(base_items // 64)
         remaining_base = int(base_items % 64)
 
-        name = f"{material.capitalize()} {type}"
+        name = f"{material.capitalize()} {type}" if material and type else (material or type).capitalize()
         base_name_raw = self.results.get_item_base_name(type, material)
         if base_name_raw and base_name_raw.lower() != type.lower() and base_name_raw.lower() != material.lower():
             base_name = f"{material.capitalize()} {base_name_raw}"
         else:
-            base_name = material.capitalize()
+            base_name = (material or base_name_raw or type).capitalize()
 
         table.setItem(row, 0, QTableWidgetItem(name))
         table.setItem(row, 1, QTableWidgetItem(self._format_number(total_items)))
@@ -239,7 +239,7 @@ class MainWindow(QMainWindow):
             type = data.get("type", "")
             material = data.get("material", "")
             total_items = float(data.get("items", 0))
-            if not type or total_items == 0:
+            if total_items == 0 or (not type and not material):
                 continue
             multiplier = self.results.get_structure_to_base_multiplier(type, material)
             base_name = self.results.get_base_name(type, material)
@@ -263,8 +263,10 @@ class MainWindow(QMainWindow):
             base_name_l = base_name.lower()
             if material and base_name_l and base_name_l == material.lower():
                 label = base_name.capitalize()
+            elif material:
+                label = f"{material.capitalize()} {base_name}"
             else:
-                label = f"{material.capitalize()} {base_name}" if material else base_name
+                label = base_name.capitalize()
             results_table.setItem(row, 0, QTableWidgetItem(label))
             results_table.setItem(row, 1, QTableWidgetItem(self._format_number(total_base_items)))
             results_table.setItem(row, 2, QTableWidgetItem(self._format_stacks(full_base_stacks, remaining_base)))
