@@ -1,8 +1,11 @@
+import json
 import math
 import sys
 
-from PySide6.QtWidgets import (QAbstractItemView, QApplication, QHeaderView,
-                               QMainWindow, QTableWidgetItem)
+from PySide6.QtCore import Qt
+
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QFileDialog,
+                               QHeaderView, QMainWindow, QTableWidgetItem)
 
 from src.add_item import AddItem
 from src.results import Results
@@ -83,13 +86,48 @@ class MainWindow(QMainWindow):
         super().close()
 
     def open_project(self):
-        print("Opening project...")
+        file_path, _ = QFileDialog.getOpenFileName(
+            self, "Open Project", "", "Minecraft Calculator (*.json)"
+        )
+        if not file_path:
+            return
+        with open(file_path, "r", encoding="utf-8") as f:
+            entries = json.load(f)
+
+        table = self.main_window.tableWidget_calculator
+        table.setRowCount(0)
+        for entry in entries:
+            type = entry.get("type", "")
+            material = entry.get("material", "")
+            items = entry.get("items", 0)
+            self.add_item_to_list(type, material, 0, items)
+        print(f"Opened project from {file_path}")
 
     def export_project(self):
         print("Exporting project...")
 
     def save_project(self):
-        print("Saving project...")
+        table = self.main_window.tableWidget_calculator
+        entries = []
+        for row in range(table.rowCount()):
+            item = table.item(row, 0)
+            if item is None:
+                continue
+            data = item.data(Qt.ItemDataRole.UserRole)
+            if data is None:
+                continue
+            entries.append(data)
+
+        file_path, _ = QFileDialog.getSaveFileName(
+            self, "Save Project", "", "Minecraft Calculator (*.json)"
+        )
+        if not file_path:
+            return
+        if not file_path.lower().endswith(".json"):
+            file_path += ".json"
+        with open(file_path, "w", encoding="utf-8") as f:
+            json.dump(entries, f, indent=2)
+        print(f"Saved project to {file_path}")
 
     def reset_requirements_table(self):
         self.main_window.tableWidget_calculator.setRowCount(0)
@@ -135,6 +173,12 @@ class MainWindow(QMainWindow):
         table.setItem(row, 3, QTableWidgetItem(base_name))
         table.setItem(row, 4, QTableWidgetItem(self._format_number(base_items)))
         table.setItem(row, 5, QTableWidgetItem(self._format_stacks(full_base_stacks, remaining_base)))
+
+        name_item = table.item(row, 0)
+        name_item.setData(
+            Qt.ItemDataRole.UserRole,
+            {"type": type, "material": material, "items": total_items},
+        )
 
         print(f"Added: {name} | {base_name} | {total_items} items | base {base_items}")
 
