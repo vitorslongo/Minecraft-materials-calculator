@@ -39,6 +39,7 @@ class Ui_MainWindow(object):
         self.label_project_title = QLabel(self.frame_8)
         self.label_project_title.setObjectName(u"label_project_title")
         self.label_project_title.setMaximumSize(QSize(16777215, 180))
+        self.label_project_title.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.gridLayout.addWidget(self.label_project_title, 0, 0, 1, 1)
 
@@ -65,6 +66,7 @@ class Ui_MainWindow(object):
         self.gridLayout_5.setObjectName(u"gridLayout_5")
         self.label_2 = QLabel(self.frame_3)
         self.label_2.setObjectName(u"label_2")
+        self.label_2.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.gridLayout_5.addWidget(self.label_2, 0, 0, 1, 1)
 
@@ -177,9 +179,14 @@ class Ui_MainWindow(object):
 
         self.gridLayout_3.addWidget(self.pushButton_open_project, 0, 2, 1, 1)
 
+        self.pushButton_save_project = QPushButton(self.frame_9)
+        self.pushButton_save_project.setObjectName(u"pushButton_save_project")
+
+        self.gridLayout_3.addWidget(self.pushButton_save_project, 0, 4, 1, 1)
+
         self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.gridLayout_3.addItem(self.horizontalSpacer_2, 0, 4, 1, 1)
+        self.gridLayout_3.addItem(self.horizontalSpacer_2, 0, 3, 1, 1)
 
         self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
@@ -189,16 +196,6 @@ class Ui_MainWindow(object):
         self.pushButton_close.setObjectName(u"pushButton_close")
 
         self.gridLayout_3.addWidget(self.pushButton_close, 0, 0, 1, 1)
-
-        self.pushButton_export_project = QPushButton(self.frame_9)
-        self.pushButton_export_project.setObjectName(u"pushButton_export_project")
-
-        self.gridLayout_3.addWidget(self.pushButton_export_project, 0, 3, 1, 1)
-
-        self.pushButton_save_project = QPushButton(self.frame_9)
-        self.pushButton_save_project.setObjectName(u"pushButton_save_project")
-
-        self.gridLayout_3.addWidget(self.pushButton_save_project, 0, 5, 1, 1)
 
 
         self.gridLayout_2.addWidget(self.frame_9, 2, 0, 1, 1)
@@ -242,8 +239,7 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem7 = self.tableWidget_results.horizontalHeaderItem(1)
         ___qtablewidgetitem7.setText(QCoreApplication.translate("MainWindow", u"Total base items", None))
         self.pushButton_open_project.setText(QCoreApplication.translate("MainWindow", u"Open Project", None))
-        self.pushButton_close.setText(QCoreApplication.translate("MainWindow", u"Close", None))
-        self.pushButton_export_project.setText(QCoreApplication.translate("MainWindow", u"Export project", None))
         self.pushButton_save_project.setText(QCoreApplication.translate("MainWindow", u"Save project", None))
+        self.pushButton_close.setText(QCoreApplication.translate("MainWindow", u"Close", None))
     # retranslateUi
 

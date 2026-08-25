@@ -41,6 +41,9 @@
          <property name="text">
           <string>Project Title</string>
          </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
         </widget>
        </item>
       </layout>
@@ -77,6 +80,9 @@
               <widget class="QLabel" name="label_2">
                <property name="text">
                 <string>Item Requirements</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignmentFlag::AlignCenter</set>
                </property>
               </widget>
              </item>
@@ -268,6 +274,13 @@
         </widget>
        </item>
        <item row="0" column="4">
+        <widget class="QPushButton" name="pushButton_save_project">
+         <property name="text">
+          <string>Save project</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
         <spacer name="horizontalSpacer_2">
          <property name="orientation">
           <enum>Qt::Orientation::Horizontal</enum>
@@ -297,20 +310,6 @@
         <widget class="QPushButton" name="pushButton_close">
          <property name="text">
           <string>Close</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="3">
-        <widget class="QPushButton" name="pushButton_export_project">
-         <property name="text">
-          <string>Export project</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="5">
-        <widget class="QPushButton" name="pushButton_save_project">
-         <property name="text">
-          <string>Save project</string>
          </property>
         </widget>
        </item>

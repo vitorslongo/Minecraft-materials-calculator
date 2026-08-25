@@ -12,10 +12,16 @@ class AddItem(QDialog):
         self.ui = Ui_AddItem()
         self.ui.setupUi(self)
         self._create_callbacks()
+        self.ui.lineEdit_material.setFocus()
 
     def _create_callbacks(self):
         self.ui.pushButton_add.clicked.connect(self.add_item_callback)
         self.ui.pushButton_clear.clicked.connect(self.clear_inputs_callback)
+        # Enter em qualquer campo confirma o item
+        self.ui.lineEdit_item_type.returnPressed.connect(self.add_item_callback)
+        self.ui.lineEdit_material.returnPressed.connect(self.add_item_callback)
+        self.ui.lineEdit_quantity_stacks.returnPressed.connect(self.add_item_callback)
+        self.ui.lineEdit_quantity_items.returnPressed.connect(self.add_item_callback)
 
     def add_item_callback(self):
         type, material, stacks, items = self.get_item_info()
@@ -37,3 +43,4 @@ class AddItem(QDialog):
         self.ui.lineEdit_material.clear()
         self.ui.lineEdit_quantity_stacks.clear()
         self.ui.lineEdit_quantity_items.clear()
+        self.ui.lineEdit_material.setFocus()
