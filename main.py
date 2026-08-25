@@ -1,5 +1,6 @@
 import json
 import math
+import os
 import sys
 
 from PySide6.QtCore import Qt
@@ -23,6 +24,7 @@ class MainWindow(QMainWindow):
         self.main_window = Ui_MainWindow()
         self.main_window.setupUi(self)
         self.setWindowTitle("Minecraft Materials Calculator")
+        self.main_window.label_project_title.setText("Unsaved Project")
 
         self.add_item_dialog = None
         self.results = Results()
@@ -62,7 +64,6 @@ class MainWindow(QMainWindow):
         # project actions
         self.main_window.pushButton_close.clicked.connect(self.close_callback)
         self.main_window.pushButton_open_project.clicked.connect(self.open_project_callback)
-        self.main_window.pushButton_export_project.clicked.connect(self.export_project_callback)
         self.main_window.pushButton_save_project.clicked.connect(self.save_project_callback)
 
         # item requirement actions
@@ -79,9 +80,6 @@ class MainWindow(QMainWindow):
 
     def open_project_callback(self):
         self.open_project()
-
-    def export_project_callback(self):
-        self.export_project()
 
     def save_project_callback(self):
         self.save_project()
@@ -102,6 +100,11 @@ class MainWindow(QMainWindow):
     def close(self):
         super().close()
 
+    def _set_project_title(self, file_path: str):
+        name = os.path.basename(file_path)
+        name = os.path.splitext(name)[0]
+        self.main_window.label_project_title.setText(name)
+
     def open_project(self):
         file_path, _ = QFileDialog.getOpenFileName(
             self, "Open Project", "", "Minecraft Calculator (*.json)"
@@ -118,10 +121,9 @@ class MainWindow(QMainWindow):
             material = entry.get("material", "")
             items = entry.get("items", 0)
             self.add_item_to_list(type, material, 0, items)
+        self._set_project_title(file_path)
         print(f"Opened project from {file_path}")
 
-    def export_project(self):
-        print("Exporting project...")
 
     def save_project(self):
         table = self.main_window.tableWidget_calculator
@@ -144,6 +146,7 @@ class MainWindow(QMainWindow):
             file_path += ".json"
         with open(file_path, "w", encoding="utf-8") as f:
             json.dump(entries, f, indent=2)
+        self._set_project_title(file_path)
         print(f"Saved project to {file_path}")
 
     def reset_requirements_table(self):
