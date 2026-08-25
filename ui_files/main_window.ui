@@ -126,10 +126,17 @@
              <enum>QFrame::Shadow::Raised</enum>
             </property>
             <layout class="QGridLayout" name="gridLayout_6">
-             <item row="0" column="2">
-              <widget class="QPushButton" name="pushButton_delete">
+             <item row="0" column="0">
+              <widget class="QPushButton" name="pushButton_reset">
                <property name="text">
-                <string>Delete</string>
+                <string>Reset</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="4">
+              <widget class="QPushButton" name="pushButton_add">
+               <property name="text">
+                <string>Add</string>
                </property>
               </widget>
              </item>
@@ -146,17 +153,10 @@
                </property>
               </spacer>
              </item>
-             <item row="0" column="0">
-              <widget class="QPushButton" name="pushButton_reset">
+             <item row="0" column="2">
+              <widget class="QPushButton" name="pushButton_delete">
                <property name="text">
-                <string>Reset</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="4">
-              <widget class="QPushButton" name="pushButton_add">
-               <property name="text">
-                <string>Add</string>
+                <string>Delete</string>
                </property>
               </widget>
              </item>
@@ -172,13 +172,6 @@
                 </size>
                </property>
               </spacer>
-             </item>
-             <item row="0" column="5">
-              <widget class="QPushButton" name="pushButton_add_batch">
-               <property name="text">
-                <string>Add batch</string>
-               </property>
-              </widget>
              </item>
             </layout>
            </widget>

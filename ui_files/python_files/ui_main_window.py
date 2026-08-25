@@ -96,15 +96,6 @@ class Ui_MainWindow(object):
         self.frame_2.setFrameShadow(QFrame.Shadow.Raised)
         self.gridLayout_6 = QGridLayout(self.frame_2)
         self.gridLayout_6.setObjectName(u"gridLayout_6")
-        self.pushButton_delete = QPushButton(self.frame_2)
-        self.pushButton_delete.setObjectName(u"pushButton_delete")
-
-        self.gridLayout_6.addWidget(self.pushButton_delete, 0, 2, 1, 1)
-
-        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.gridLayout_6.addItem(self.horizontalSpacer_4, 0, 3, 1, 1)
-
         self.pushButton_reset = QPushButton(self.frame_2)
         self.pushButton_reset.setObjectName(u"pushButton_reset")
 
@@ -115,14 +106,18 @@ class Ui_MainWindow(object):
 
         self.gridLayout_6.addWidget(self.pushButton_add, 0, 4, 1, 1)
 
+        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout_6.addItem(self.horizontalSpacer_4, 0, 3, 1, 1)
+
+        self.pushButton_delete = QPushButton(self.frame_2)
+        self.pushButton_delete.setObjectName(u"pushButton_delete")
+
+        self.gridLayout_6.addWidget(self.pushButton_delete, 0, 2, 1, 1)
+
         self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.gridLayout_6.addItem(self.horizontalSpacer_3, 0, 1, 1, 1)
-
-        self.pushButton_add_batch = QPushButton(self.frame_2)
-        self.pushButton_add_batch.setObjectName(u"pushButton_add_batch")
-
-        self.gridLayout_6.addWidget(self.pushButton_add_batch, 0, 5, 1, 1)
 
 
         self.gridLayout_8.addWidget(self.frame_2, 2, 0, 1, 1)
@@ -238,10 +233,9 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem4.setText(QCoreApplication.translate("MainWindow", u"Base items", None))
         ___qtablewidgetitem5 = self.tableWidget_calculator.horizontalHeaderItem(5)
         ___qtablewidgetitem5.setText(QCoreApplication.translate("MainWindow", u"Base stacks", None))
-        self.pushButton_delete.setText(QCoreApplication.translate("MainWindow", u"Delete", None))
         self.pushButton_reset.setText(QCoreApplication.translate("MainWindow", u"Reset", None))
         self.pushButton_add.setText(QCoreApplication.translate("MainWindow", u"Add", None))
-        self.pushButton_add_batch.setText(QCoreApplication.translate("MainWindow", u"Add batch", None))
+        self.pushButton_delete.setText(QCoreApplication.translate("MainWindow", u"Delete", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Results", None))
         ___qtablewidgetitem6 = self.tableWidget_results.horizontalHeaderItem(0)
         ___qtablewidgetitem6.setText(QCoreApplication.translate("MainWindow", u"Stacks", None))

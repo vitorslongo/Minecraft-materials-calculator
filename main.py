@@ -1,7 +1,8 @@
 import math
 import sys
 
-from PySide6.QtWidgets import QApplication, QHeaderView, QMainWindow, QTableWidgetItem
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QHeaderView,
+                               QMainWindow, QTableWidgetItem)
 
 from src.add_item import AddItem
 from src.results import Results
@@ -18,6 +19,7 @@ class MainWindow(QMainWindow):
         self.add_item_dialog = None
         self.results = Results()
         self._setup_table_columns()
+        self._disable_table_editing()
 
         self._create_callbacks()
 
@@ -29,6 +31,11 @@ class MainWindow(QMainWindow):
             header.setSectionResizeMode(col, QHeaderView.ResizeMode.Stretch)
         for col in [1, 2, 4, 5]:
             header.setSectionResizeMode(col, QHeaderView.ResizeMode.ResizeToContents)
+
+
+    def _disable_table_editing(self):
+        table = self.main_window.tableWidget_calculator
+        table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
 
 
     def _create_callbacks(self):
@@ -85,10 +92,13 @@ class MainWindow(QMainWindow):
         print("Saving project...")
 
     def reset_requirements_table(self):
-        print("Resetting...")
+        self.main_window.tableWidget_calculator.setRowCount(0)
 
     def delete_item(self):
-        print("Deleting...")
+        table = self.main_window.tableWidget_calculator
+        row = table.currentRow()
+        if row >= 0:
+            table.removeRow(row)
 
     def open_add_item_dialog(self):
         print("opening")
